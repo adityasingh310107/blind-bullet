@@ -10,7 +10,7 @@
 <style>
 :root {
   --bg: #050614;
-  --bg-card: rgba(10, 13, 38, 0.78);
+  --bg-card: rgba(10, 13, 38, 0.82);
   --cyan: #00f0ff;
   --pink: #ff2bd6;
   --amber: #ffd23f;
@@ -18,7 +18,7 @@
   --purple: #9d4edd;
   --font-display: 'Orbitron', -apple-system, sans-serif;
   --font-body: 'Rajdhani', -apple-system, sans-serif;
-  --border-neon: 1px solid rgba(0, 240, 255, 0.28);
+  --border-neon: 1px solid rgba(0, 240, 255, 0.32);
   --glass: blur(14px);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; touch-action: manipulation; }
@@ -41,8 +41,8 @@ html, body {
   position: fixed; inset: 0;
   pointer-events: none;
   z-index: 2;
-  background: radial-gradient(circle at center, transparent 45%, rgba(2, 3, 12, 0.75) 100%);
-  box-shadow: inset 0 0 100px rgba(0,0,0,0.85);
+  background: radial-gradient(circle at center, transparent 40%, rgba(2, 3, 12, 0.78) 100%);
+  box-shadow: inset 0 0 90px rgba(0,0,0,0.85);
 }
 #scanlines {
   position: fixed; inset: 0;
@@ -62,6 +62,47 @@ html, body {
   transition: opacity .12s ease-out;
 }
 
+/* Landscape Orientation Prompt for Mobile */
+#rotateOverlay {
+  position: fixed; inset: 0;
+  z-index: 99999;
+  background: radial-gradient(circle at center, rgba(8, 12, 40, 0.98) 0%, rgba(3, 4, 16, 0.99) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+  padding: 24px;
+}
+@media screen and (orientation: portrait) and (max-width: 950px) {
+  #rotateOverlay { display: flex !important; }
+}
+.rotate-phone-anim {
+  width: 72px; height: 72px;
+  border: 3px solid var(--cyan);
+  border-radius: 14px;
+  position: relative;
+  animation: rotatePhone 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.5);
+}
+.rotate-phone-anim::after {
+  content: '';
+  position: absolute;
+  top: 8px; left: 50%;
+  transform: translateX(-50%);
+  width: 16px; height: 4px;
+  background: var(--pink);
+  border-radius: 2px;
+}
+@keyframes rotatePhone {
+  0%, 15% { transform: rotate(0deg); }
+  50%, 75% { transform: rotate(90deg); }
+  90%, 100% { transform: rotate(90deg); }
+}
+
 /* Screen Transitions */
 .scr {
   position: fixed; inset: 0;
@@ -69,15 +110,15 @@ html, body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 16px;
-  background: radial-gradient(circle at center, rgba(8, 11, 36, 0.82) 0%, rgba(3, 4, 16, 0.94) 100%);
+  gap: 14px;
+  background: radial-gradient(circle at center, rgba(8, 11, 36, 0.84) 0%, rgba(3, 4, 16, 0.95) 100%);
   backdrop-filter: var(--glass);
   -webkit-backdrop-filter: var(--glass);
   z-index: 10;
-  padding: 20px;
+  padding: 16px;
   text-align: center;
   overflow-y: auto;
-  animation: fadeIn 0.3s ease-out;
+  animation: fadeIn 0.25s ease-out;
 }
 .scr.on { display: flex; }
 @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
@@ -85,7 +126,7 @@ html, body {
 /* Typography */
 h1 {
   font-family: var(--font-display);
-  font-size: clamp(34px, 7vw, 84px);
+  font-size: clamp(32px, 6vw, 76px);
   font-weight: 900;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -94,27 +135,26 @@ h1 {
   background-clip: text;
   color: transparent;
   filter: drop-shadow(0 0 25px rgba(0, 240, 255, 0.5));
-  text-shadow: 0 0 35px rgba(255, 43, 214, 0.35);
   animation: glowPulse 3.5s ease-in-out infinite;
 }
 @keyframes glowPulse {
-  0%, 100% { filter: drop-shadow(0 0 20px rgba(0,240,255,0.4)); transform: translateY(0); }
-  50% { filter: drop-shadow(0 0 35px rgba(255,43,214,0.7)); transform: translateY(-3px); }
+  0%, 100% { filter: drop-shadow(0 0 20px rgba(0,240,255,0.4)); }
+  50% { filter: drop-shadow(0 0 35px rgba(255,43,214,0.7)); }
 }
 h2 {
   font-family: var(--font-display);
-  font-size: clamp(22px, 4.5vw, 38px);
+  font-size: clamp(20px, 4vw, 36px);
   letter-spacing: 0.1em;
   color: #fff;
   text-shadow: 0 0 16px var(--cyan);
 }
 h3 {
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0.22em;
   color: #7ce8ff;
   text-transform: uppercase;
-  margin-top: 6px;
+  margin-top: 4px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -123,7 +163,7 @@ h3::before, h3::after {
   content: '';
   display: inline-block;
   height: 1px;
-  width: 24px;
+  width: 22px;
   background: rgba(0, 240, 255, 0.4);
 }
 
@@ -144,14 +184,6 @@ button {
   position: relative;
   overflow: hidden;
 }
-button::after {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%; width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transition: left 0.4s ease;
-}
-button:hover::after { left: 100%; }
 button:hover {
   transform: translateY(-2px);
   border-color: var(--cyan);
@@ -166,81 +198,68 @@ button.sel {
   box-shadow: 0 0 20px rgba(0, 240, 255, 0.5), inset 0 0 14px rgba(255, 43, 214, 0.35);
 }
 button.big {
-  font-size: 18px;
-  padding: 14px 34px;
-  letter-spacing: 0.14em;
+  font-size: 17px;
+  padding: 12px 30px;
+  letter-spacing: 0.12em;
   background: linear-gradient(135deg, rgba(0, 204, 255, 0.25) 0%, rgba(255, 43, 214, 0.35) 100%);
   border: 1px solid var(--cyan);
   box-shadow: 0 0 25px rgba(0, 240, 255, 0.3);
 }
-button.big:hover {
-  border-color: #fff;
-  box-shadow: 0 0 35px rgba(0, 240, 255, 0.65), 0 0 15px rgba(255, 43, 214, 0.4);
-}
 
-.row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 920px; align-items: center; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 900px; align-items: center; }
 .card-grid {
   background: var(--bg-card);
   border: var(--border-neon);
-  border-radius: 14px;
-  padding: 16px 20px;
+  border-radius: 12px;
+  padding: 12px 18px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.6);
 }
 .slot {
-  display: flex; flex-direction: column; gap: 8px; align-items: center;
+  display: flex; flex-direction: column; gap: 6px; align-items: center;
   border: 2px solid;
   border-radius: 12px;
-  padding: 12px 14px;
-  min-width: 140px;
+  padding: 10px 12px;
+  min-width: 130px;
   background: rgba(10, 14, 42, 0.75);
   box-shadow: inset 0 0 12px rgba(0,0,0,0.5);
-  transition: transform .2s ease;
 }
-.slot:hover { transform: translateY(-3px); }
-.slot small { color: #8a9ad0; font-size: 12px; font-weight: 700; }
+.slot small { color: #8a9ad0; font-size: 11px; font-weight: 700; }
 small.dim {
   color: #93a2dc;
-  font-size: 15px;
-  max-width: 580px;
-  line-height: 1.5;
+  font-size: 14px;
+  max-width: 560px;
+  line-height: 1.4;
   font-weight: 600;
 }
-#err { color: #ff476d; min-height: 20px; font-weight: 700; font-size: 14px; text-shadow: 0 0 10px rgba(255,71,109,0.5); }
-input[type="range"] {
-  accent-color: var(--cyan);
-  cursor: pointer;
-  height: 6px;
-  border-radius: 4px;
-}
+#err { color: #ff476d; min-height: 18px; font-weight: 700; font-size: 13px; }
 input#jc {
   font-family: var(--font-display);
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 900;
-  letter-spacing: 0.35em;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  width: 160px;
+  width: 150px;
   text-align: center;
-  padding: 10px;
+  padding: 8px;
   border-radius: 10px;
   border: 1px solid var(--cyan);
   background: rgba(10, 14, 46, 0.9);
   color: #fff;
-  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
 }
-#rc { font-family: var(--font-display); font-size: 22px; letter-spacing: 0.25em; color: var(--cyan); font-weight: 900; text-shadow: 0 0 15px rgba(0,240,255,0.7); }
-.bind { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; margin: 4px 0; }
-.bind button { padding: 6px 12px; font-size: 12px; }
+#rc { font-family: var(--font-display); font-size: 20px; letter-spacing: 0.2em; color: var(--cyan); font-weight: 900; }
+.bind { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center; margin: 3px 0; }
+.bind button { padding: 5px 10px; font-size: 11px; }
 
-/* Table for Winners */
-table { border-collapse: collapse; font-size: 15px; margin: 12px 0; min-width: 320px; }
-td, th { padding: 8px 16px; border-bottom: 1px solid rgba(255,255,255,0.12); }
-th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; color: var(--cyan); }
+/* Table */
+table { border-collapse: collapse; font-size: 14px; margin: 10px 0; min-width: 300px; }
+td, th { padding: 6px 14px; border-bottom: 1px solid rgba(255,255,255,0.12); }
+th { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.1em; color: var(--cyan); }
 
 /* HUD Top Status */
 #hud { position: fixed; inset: 0; pointer-events: none; display: none; z-index: 8; }
 #hud.on { display: block; }
 #status {
-  position: absolute; top: 12px; left: 50%;
+  position: absolute; top: 10px; left: 50%;
   transform: translateX(-50%);
   display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
   max-width: 90vw;
@@ -248,73 +267,64 @@ th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; 
 .chip {
   border: 1.5px solid;
   border-radius: 20px;
-  padding: 5px 14px;
+  padding: 4px 12px;
   background: rgba(5, 7, 24, 0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   font-family: var(--font-display);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  display: flex; gap: 8px; align-items: center;
+  display: flex; gap: 6px; align-items: center;
   box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-  transition: all .25s ease;
 }
-.chip i { width: 9px; height: 9px; border-radius: 50%; box-shadow: 0 0 8px currentColor; }
+.chip i { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 8px currentColor; }
 .chip.dead { opacity: 0.35; filter: grayscale(0.8); text-decoration: line-through; }
 
 /* Center Timer & Round Banner */
 #tm {
-  position: absolute; top: 58px; left: 50%;
+  position: absolute; top: 46px; left: 50%;
   transform: translateX(-50%);
   text-align: center;
   text-shadow: 0 0 16px rgba(0,0,0,0.9);
 }
 #tn {
   font-family: var(--font-display);
-  font-size: clamp(48px, 9vw, 88px);
+  font-size: clamp(40px, 8vw, 76px);
   font-weight: 900;
   line-height: 1;
   color: #fff;
-  text-shadow: 0 0 30px var(--cyan);
-  transition: color .2s;
+  text-shadow: 0 0 25px var(--cyan);
 }
-#tn.red {
-  color: #ff3355;
-  text-shadow: 0 0 35px #ff3355;
-  animation: pulseTimer 0.6s infinite alternate;
-}
-@keyframes pulseTimer { from { transform: scale(1); } to { transform: scale(1.1); } }
+#tn.red { color: #ff3355; text-shadow: 0 0 35px #ff3355; }
 #tl {
   font-family: var(--font-display);
-  font-size: 12px;
-  letter-spacing: 0.22em;
+  font-size: 11px;
+  letter-spacing: 0.2em;
   color: #9fe9ff;
-  margin-top: 4px;
+  margin-top: 2px;
   font-weight: 700;
-  text-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
 }
 #rnd {
   font-family: var(--font-display);
-  font-size: 13px;
-  letter-spacing: 0.16em;
+  font-size: 12px;
+  letter-spacing: 0.15em;
   color: var(--amber);
-  margin-bottom: 2px;
 }
 #banner {
-  position: absolute; top: 34%; left: 0; right: 0;
+  position: absolute; top: 32%; left: 0; right: 0;
   text-align: center;
   font-family: var(--font-display);
-  font-size: clamp(34px, 8vw, 80px);
+  font-size: clamp(30px, 7vw, 72px);
   font-weight: 900;
   text-shadow: 0 0 35px var(--cyan), 0 4px 0 #000;
   opacity: 0;
 }
 #banner small {
   display: block;
-  font-size: clamp(14px, 2.2vw, 22px);
-  letter-spacing: 0.18em;
+  font-size: clamp(13px, 2vw, 20px);
+  letter-spacing: 0.16em;
   color: #fff;
-  margin-top: 8px;
+  margin-top: 6px;
 }
 @keyframes pop {
   0% { opacity: 0; transform: scale(0.65); filter: blur(6px); }
@@ -326,64 +336,67 @@ th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; 
 
 /* Feed */
 #feed {
-  position: absolute; right: 14px; top: 48%;
-  display: flex; flex-direction: column; gap: 6px; align-items: flex-end;
+  position: absolute; right: 14px; top: 40%;
+  display: flex; flex-direction: column; gap: 5px; align-items: flex-end;
   pointer-events: none;
 }
 #feed div {
   background: rgba(6, 8, 28, 0.88);
   border-left: 4px solid;
-  padding: 6px 14px;
+  padding: 5px 12px;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   box-shadow: 0 4px 15px rgba(0,0,0,0.5);
   animation: slideIn 0.3s ease-out;
 }
 @keyframes slideIn { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-/* Tactical Corner Radar Panels */
-.panel {
+/* NEW IMMERSIVE TACTICAL BOTTOM HUD (Replaces the tiny left box!) */
+#playerTelemetry {
   position: absolute;
-  width: 175px;
-  background: rgba(6, 9, 32, 0.85);
-  border: 1.5px solid;
-  border-radius: 16px;
-  padding: 8px;
-  text-align: center;
-  font-size: 12px;
-  display: none;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.65), inset 0 0 15px rgba(0, 240, 255, 0.08);
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(6, 10, 32, 0.85);
+  border: 1.5px solid rgba(0, 240, 255, 0.4);
+  border-radius: 14px;
+  padding: 8px 18px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(0, 240, 255, 0.1);
+  pointer-events: none;
+  z-index: 8;
   transition: opacity .2s;
-  pointer-events: auto;
 }
-.panel.on { display: block; }
-.panel canvas {
-  width: 155px; height: 155px;
-  display: block; margin: 4px auto;
-  border-radius: 50%;
-  background: radial-gradient(circle, #080d28 0%, #030412 100%);
-  box-shadow: inset 0 0 12px rgba(0, 240, 255, 0.25);
+.telem-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
 }
-.panel.p0 { left: 14px; bottom: 14px; }
-.panel.p1 { right: 14px; bottom: 14px; }
-.panel.p2 { left: 14px; top: 68px; }
-.panel.p3 { right: 14px; top: 68px; }
-.panel b { font-family: var(--font-display); font-size: 13px; }
-.panel .pi { font-weight: 700; color: #fff; margin-left: 4px; }
-.panel .pt { font-size: 11px; margin-top: 4px; font-weight: 700; color: #8cf; }
-.panel .lk { color: var(--green); font-weight: 900; text-shadow: 0 0 10px rgba(0,255,136,0.8); }
-
-/* Energy Battery Bar */
+.telem-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: #7ce8ff;
+}
+.telem-val {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 900;
+  color: #fff;
+}
 .energy-bar-wrap {
-  width: 100%;
-  height: 6px;
-  background: rgba(255,255,255,0.1);
-  border-radius: 3px;
+  width: 120px;
+  height: 8px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 4px;
   overflow: hidden;
-  margin: 4px 0;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
 }
 .energy-bar-fill {
   height: 100%;
@@ -392,7 +405,7 @@ th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; 
   transition: width 0.1s linear;
 }
 
-/* On-Screen Mobile Touch Controls */
+/* On-Screen Mobile Landscape Touch Controls */
 #touchControls {
   position: fixed;
   inset: 0;
@@ -402,13 +415,13 @@ th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; 
 }
 #touchControls.active { display: block; }
 
-/* Left Virtual Thumbpad / D-Pad */
+/* Left Virtual Thumbpad Joystick */
 #touchLeft {
   position: absolute;
-  left: 18px;
-  bottom: 24px;
-  width: 170px;
-  height: 170px;
+  left: 20px;
+  bottom: 20px;
+  width: 160px;
+  height: 160px;
   pointer-events: auto;
   display: flex;
   align-items: center;
@@ -416,33 +429,33 @@ th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; 
 }
 #joystickBase {
   position: absolute;
-  width: 140px;
-  height: 140px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, rgba(5, 10, 35, 0.65) 100%);
-  border: 2px solid rgba(0, 240, 255, 0.45);
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), inset 0 0 15px rgba(0, 240, 255, 0.15);
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.18) 0%, rgba(5, 10, 35, 0.65) 100%);
+  border: 2px solid rgba(0, 240, 255, 0.5);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.35), inset 0 0 15px rgba(0, 240, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 #joystickStick {
-  width: 58px;
-  height: 58px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: radial-gradient(circle, #00f0ff 0%, #0c3b6b 100%);
   border: 2px solid #fff;
-  box-shadow: 0 0 15px rgba(0, 240, 255, 0.8);
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.9);
   transform: translate(0px, 0px);
   pointer-events: none;
-  transition: transform 0.05s ease-out;
+  transition: transform 0.04s ease-out;
 }
 .dpad-hint {
   position: absolute;
   font-family: var(--font-display);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.55);
   pointer-events: none;
 }
 .dpad-up { top: 6px; }
@@ -452,34 +465,29 @@ th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; 
 /* Right Shoot / Lock Action Button */
 #touchRight {
   position: absolute;
-  right: 20px;
-  bottom: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center;
+  right: 24px;
+  bottom: 20px;
   pointer-events: auto;
 }
 #touchFireBtn {
-  width: 90px;
-  height: 90px;
+  width: 86px;
+  height: 86px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 43, 214, 0.4) 0%, rgba(20, 10, 45, 0.9) 100%);
-  border: 2px solid var(--pink);
-  box-shadow: 0 0 25px rgba(255, 43, 214, 0.6), inset 0 0 15px rgba(255, 43, 214, 0.3);
+  background: radial-gradient(circle, rgba(255, 43, 214, 0.45) 0%, rgba(20, 10, 45, 0.92) 100%);
+  border: 2.5px solid var(--pink);
+  box-shadow: 0 0 25px rgba(255, 43, 214, 0.65), inset 0 0 15px rgba(255, 43, 214, 0.35);
   color: #fff;
   font-family: var(--font-display);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 900;
   letter-spacing: 0.08em;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 3px;
   cursor: pointer;
   outline: none;
-  user-select: none;
   transition: transform .12s, box-shadow .12s;
 }
 #touchFireBtn:active {
@@ -487,16 +495,16 @@ th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; 
   box-shadow: 0 0 35px rgba(255, 43, 214, 0.9);
 }
 #touchFireBtn.locked {
-  background: radial-gradient(circle, rgba(0, 255, 136, 0.4) 0%, rgba(10, 35, 25, 0.9) 100%);
+  background: radial-gradient(circle, rgba(0, 255, 136, 0.45) 0%, rgba(10, 35, 25, 0.95) 100%);
   border-color: var(--green);
-  box-shadow: 0 0 25px rgba(0, 255, 136, 0.6);
+  box-shadow: 0 0 25px rgba(0, 255, 136, 0.7);
   color: var(--green);
 }
 
-/* Quick Corner Buttons (Audio, Fullscreen) */
+/* Quick Corner Buttons */
 #quickBar {
   position: fixed;
-  top: 12px;
+  top: 10px;
   right: 12px;
   display: flex;
   gap: 8px;
@@ -507,7 +515,7 @@ th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; 
   border: 1px solid rgba(0, 240, 255, 0.3);
   border-radius: 8px;
   padding: 6px 10px;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   color: #fff;
   backdrop-filter: blur(6px);
@@ -515,19 +523,16 @@ th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; 
 }
 .icon-btn:hover { border-color: var(--cyan); box-shadow: 0 0 12px rgba(0,240,255,0.4); }
 
-@media (max-width: 768px) {
-  .panel { width: 130px; font-size: 10px; padding: 4px; }
-  .panel canvas { width: 110px; height: 110px; }
-  .panel.p0 { left: 8px; bottom: 180px; } /* Elevated above touch joystick */
-  .panel.p1 { right: 8px; bottom: 180px; }
-  .panel.p2 { left: 8px; top: 52px; }
-  .panel.p3 { right: 8px; top: 52px; }
-  #touchLeft { width: 150px; height: 150px; left: 10px; bottom: 15px; }
-  #joystickBase { width: 125px; height: 125px; }
-  #joystickStick { width: 50px; height: 50px; }
-  #touchRight { right: 12px; bottom: 20px; }
-  #touchFireBtn { width: 80px; height: 80px; font-size: 12px; }
-  #tm { top: 48px; }
+@media (max-height: 500px) {
+  #tm { top: 38px; }
+  #status { top: 6px; }
+  #touchLeft { width: 130px; height: 130px; left: 14px; bottom: 10px; }
+  #joystickBase { width: 110px; height: 110px; }
+  #joystickStick { width: 44px; height: 44px; }
+  #touchRight { right: 16px; bottom: 10px; }
+  #touchFireBtn { width: 72px; height: 72px; font-size: 11px; }
+  #playerTelemetry { bottom: 6px; padding: 4px 12px; gap: 10px; }
+  .energy-bar-wrap { width: 80px; }
 }
 </style>
 </head>
@@ -536,6 +541,16 @@ th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; 
 <div id="vignette"></div>
 <div id="scanlines"></div>
 <div id="flash"></div>
+
+<!-- Mobile Portrait -> Landscape Enforcement Overlay -->
+<div id="rotateOverlay">
+  <div class="rotate-phone-anim"></div>
+  <h2>ROTATE DEVICE TO LANDSCAPE</h2>
+  <small class="dim" style="font-size:15px">
+    Blind Bullet requires a widescreen tactical view for full 3D combat and dual-thumb touch controls.
+  </small>
+  <button class="big" id="btnRequestLandscape">TAP TO ROTATE / FULLSCREEN</button>
+</div>
 
 <div id="quickBar">
   <button class="icon-btn" id="btnCrt" title="Toggle Scanlines">CRT</button>
@@ -553,17 +568,32 @@ th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; 
   <div id="banner"></div>
   <div id="feed"></div>
   
-  <div class="panel p0"></div>
-  <div class="panel p1"></div>
-  <div class="panel p2"></div>
-  <div class="panel p3"></div>
+  <!-- Sleek Bottom Telemetry Bar (No tiny left box!) -->
+  <div id="playerTelemetry">
+    <div class="telem-section">
+      <div class="telem-label">WEAPON</div>
+      <div class="telem-val" id="hudWeapon">🔫 PISTOL</div>
+    </div>
+    <div class="telem-section">
+      <div class="telem-label">THRUST</div>
+      <div class="energy-bar-wrap"><div class="energy-bar-fill" id="hudEnergyFill"></div></div>
+    </div>
+    <div class="telem-section">
+      <div class="telem-label">POWERUP</div>
+      <div class="telem-val" id="hudPowerup" style="color:var(--amber)">NONE</div>
+    </div>
+    <div class="telem-section">
+      <div class="telem-label">AIM STATE</div>
+      <div class="telem-val" id="hudLockState" style="color:var(--cyan)">AIMING...</div>
+    </div>
+  </div>
 </div>
 
-<!-- TOUCH CONTROLS (Mobile / Tablet) -->
+<!-- TOUCH CONTROLS (Mobile Landscape) -->
 <div id="touchControls">
   <div id="touchLeft">
     <div id="joystickBase">
-      <div class="dpad-hint dpad-up">▲ MOVE</div>
+      <div class="dpad-hint dpad-up">▲ THRUST</div>
       <div class="dpad-hint dpad-left">◀</div>
       <div class="dpad-hint dpad-right">▶</div>
       <div id="joystickStick"></div>
@@ -571,7 +601,7 @@ th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; 
   </div>
   <div id="touchRight">
     <button id="touchFireBtn">
-      <span style="font-size:22px">🎯</span>
+      <span style="font-size:20px">🎯</span>
       <span id="touchFireLabel">LOCK</span>
     </button>
   </div>
@@ -580,15 +610,12 @@ th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; 
 <!-- MAIN MENU -->
 <div class="scr on" id="menu">
   <h1>BLIND BULLET</h1>
-  <small class="dim">Aim in secret. Predict your rivals. Everyone materializes and every shot discharges at the exact same instant. The last survivor claims glory.</small>
+  <small class="dim">Aim in secret directly on the arena. Opponents remain invisible until the reveal. Everyone discharges together. The last survivor standing claims glory.</small>
   <div class="row" style="margin-top:14px">
     <button class="big" id="bPlay">PLAY LOCAL</button>
     <button class="big" id="bOn">PLAY ONLINE</button>
     <button id="bSet">SETTINGS</button>
   </div>
-  <small class="dim" style="font-size:13px;margin-top:10px">
-    💡 Pro tip: Opponents remain fully invisible during the aim phase. Watch radar sonar, listen for audio cues, and anticipate their movement!
-  </small>
 </div>
 
 <!-- MATCH SETUP -->
@@ -611,8 +638,8 @@ th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; 
 
 <!-- SETTINGS -->
 <div class="scr" id="settings">
-  <h2>AUDIO & TELEMETRY</h2>
-  <div class="card-grid" style="display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin:8px 0">
+  <h2>AUDIO & CONTROLS</h2>
+  <div class="card-grid" style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin:6px 0">
     <label>Synthesizer Music <input type="range" id="vm" min="0" max="1" step=".05" value=".5"></label>
     <label>Combat SFX <input type="range" id="vs" min="0" max="1" step=".05" value=".8"></label>
     <label>Touch Controls <select id="selTouch" style="background:#0c0f30;color:#fff;border:1px solid var(--cyan);padding:4px 8px;border-radius:6px">
@@ -623,23 +650,23 @@ th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; 
   </div>
   <h3>KEYBOARD & GAMEPAD BINDINGS</h3>
   <div id="binds" class="card-grid"></div>
-  <small class="dim">Gamepads: Analog stick or D-pad rotates/moves, Button A locks aim. Pad 1 controls P1, etc.</small>
+  <small class="dim">Gamepads: Left stick turns & moves forward, Button A locks aim. Pad 1 controls P1.</small>
   <button id="bBack2" style="margin-top:8px">BACK</button>
 </div>
 
 <!-- ONLINE MULTIPLAYER -->
 <div class="scr" id="online">
   <h2>PEER-TO-PEER LOBBY</h2>
-  <small class="dim">Direct encrypted WebRTC connection. One player hosts and shares the 4-character room code. No server sign-in required.</small>
-  <div class="row" style="margin:12px 0"><button class="big" id="bHost">HOST NEW ROOM</button></div>
-  <small class="dim">— OR JOIN EXISTING LOBBY —</small>
+  <small class="dim">Direct WebRTC connection. One player hosts and shares the 4-letter room code.</small>
+  <div class="row" style="margin:10px 0"><button class="big" id="bHost">HOST NEW ROOM</button></div>
+  <small class="dim">— OR JOIN EXISTING ROOM —</small>
   <div class="row" style="margin:8px 0">
     <input id="jc" maxlength="4" placeholder="CODE" autocomplete="off">
-    <button id="bJoin" class="big" style="padding:10px 24px">CONNECT</button>
+    <button id="bJoin" class="big" style="padding:9px 24px">CONNECT</button>
   </div>
   <div id="onst" style="color:var(--green);font-weight:700"></div>
-  <div id="onerr" style="color:#ff476d;min-height:20px;font-weight:700"></div>
-  <button id="bBack3" style="margin-top:12px">BACK</button>
+  <div id="onerr" style="color:#ff476d;min-height:18px;font-weight:700"></div>
+  <button id="bBack3" style="margin-top:10px">BACK</button>
 </div>
 
 <!-- PAUSE OVERLAY -->
@@ -648,7 +675,7 @@ th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; 
   <div class="row">
     <button class="big" id="bRes">RESUME</button>
     <button id="bRst">RESTART</button>
-    <button id="bMen">ABORT TO MENU</button>
+    <button id="bMen">MAIN MENU</button>
   </div>
 </div>
 
@@ -656,7 +683,7 @@ th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.12em; 
 <div class="scr" id="win">
   <h1 id="wt" style="animation:none"></h1>
   <div id="wst"></div>
-  <div class="row" style="margin-top:16px">
+  <div class="row" style="margin-top:14px">
     <button class="big" id="again">DEPLOY AGAIN</button>
     <button id="bMen2">MAIN MENU</button>
   </div>
@@ -698,11 +725,11 @@ const MAPS = [
 ];
 
 const W = {
-  pistol: { n: 'PISTOL', i: '🔫', c: 0xcccccc, desc: 'Balanced single-target projectile' },
-  shotgun: { n: 'SHOTGUN', i: '💥', c: 0xff8822, desc: 'Wide 7-pellet close range blast' },
-  laser: { n: 'LASER', i: '⚡', c: 0xff1155, desc: 'High-speed piercing beam' },
-  ric: { n: 'RICOCHET', i: '🪃', c: 0x00ffaa, desc: 'Bounces off pillars and walls' },
-  double: { n: 'DUAL SHOT', i: '✌️', c: 0x44aaff, desc: 'Twin parallel trajectory rounds' }
+  pistol: { n: 'PISTOL', i: '🔫', c: 0xcccccc },
+  shotgun: { n: 'SHOTGUN', i: '💥', c: 0xff8822 },
+  laser: { n: 'LASER', i: '⚡', c: 0xff1155 },
+  ric: { n: 'RICOCHET', i: '🪃', c: 0x00ffaa },
+  double: { n: 'DUAL SHOT', i: '✌️', c: 0x44aaff }
 };
 
 /* ---------- DYNAMIC WEB AUDIO SYNTHESIZER ---------- */
@@ -727,7 +754,7 @@ function tone(f, d, ty = 'sine', v = 0.2, sl = 0, dl = 0, k = S.sfx) {
     o.stop(t + d + 0.03);
   } catch(e) {}
 }
-function noise(d, v, f, q = 1) {
+function noise(d, v, f) {
   if (!au || S.sfx <= 0) return;
   try {
     const a = ac(), n = (a.sampleRate * d) | 0, b = a.createBuffer(1, n, a.sampleRate), c = b.getChannelData(0);
@@ -737,7 +764,6 @@ function noise(d, v, f, q = 1) {
     const fl = a.createBiquadFilter();
     fl.type = 'lowpass';
     fl.frequency.value = f;
-    fl.Q.value = q;
     const g = a.createGain();
     g.gain.value = v * S.sfx;
     s.connect(fl);
@@ -780,14 +806,14 @@ setInterval(() => {
   ms++;
 }, 220);
 
-/* ---------- THREE.JS HIGH-IMPACT SCENE SETUP ---------- */
+/* ---------- THREE.JS ARENA SETUP ---------- */
 const rdr = new THREE.WebGLRenderer({ canvas: $('gl'), antialias: true, alpha: false, powerPreference: 'high-performance' });
 rdr.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 rdr.toneMapping = THREE.ACESFilmicToneMapping;
 rdr.toneMappingExposure = 1.15;
 
 const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(50, 1, 0.1, 400);
-const ambLight = new THREE.AmbientLight(0xffffff, 0.45);
+const ambLight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambLight);
 
 const dirLight = new THREE.DirectionalLight(0xffffff, 0.85);
@@ -800,7 +826,7 @@ pl1.position.set(-10, 7, -8);
 pl2.position.set(10, 7, 8);
 scene.add(pl1, pl2);
 
-// Dynamic flash light for muzzle blasts & explosions
+// Dynamic blast flash light
 const blastLight = new THREE.PointLight(0xffffff, 0, 40);
 blastLight.position.set(0, 3, 0);
 scene.add(blastLight);
@@ -808,12 +834,17 @@ scene.add(blastLight);
 function resize() {
   rdr.setSize(window.innerWidth, window.innerHeight, false);
   cam.aspect = window.innerWidth / window.innerHeight;
+  // Dynamic FOV adjustment: wider on landscape mobile so the entire 3D arena is in full view!
+  if (cam.aspect < 1.4) cam.fov = 58;
+  else if (cam.aspect < 1.8) cam.fov = 50;
+  else cam.fov = 46;
   cam.updateProjectionMatrix();
 }
 window.addEventListener('resize', resize);
+window.addEventListener('orientationchange', () => setTimeout(resize, 200));
 resize();
 
-let world, tiles = [], edge, ringOutlines = [], G = null, B = [], demo = [], shake = 0, time = 0;
+let world, tiles = [], edge, G = null, B = [], demo = [], shake = 0, time = 0;
 
 /* Visual Flash screen effect */
 function screenFlash(col = '#fff', opacity = 0.35) {
@@ -828,11 +859,10 @@ function buildWorld() {
   world = new THREE.Group();
   scene.add(world);
   tiles = [];
-  ringOutlines = [];
   const M = MAPS[S.map];
 
   scene.background = new THREE.Color(M.sky);
-  scene.fog = new THREE.FogExp2(M.sky, 0.018);
+  scene.fog = new THREE.FogExp2(M.sky, 0.016);
   pl1.color.setHex(M.a);
   pl2.color.setHex(M.b);
 
@@ -871,7 +901,7 @@ function buildWorld() {
     }
   }
 
-  // Neon Pillars with Glowing Light Rods
+  // Pillars
   M.pil.forEach(([x, z, pr]) => {
     const pilGroup = new THREE.Group();
     const core = new THREE.Mesh(
@@ -902,7 +932,7 @@ function buildWorld() {
   bl.position.y = -10;
   world.add(bl);
 
-  // Floating Cyber Stars / Ambient Particles
+  // Ambient Star Dust
   const st = new Float32Array(1500);
   for (let i = 0; i < 1500; i += 3) {
     const v = new THREE.Vector3(rnd(-1, 1), rnd(-0.2, 1), rnd(-1, 1)).normalize().multiplyScalar(rnd(50, 140));
@@ -922,7 +952,7 @@ function buildWorld() {
   world.add(edge);
 }
 
-/* Character Construction (Cyber Mech Chibi) */
+/* 3D Character Mesh Construction */
 function makeChar(col, style) {
   const g = new THREE.Group();
   
@@ -933,33 +963,33 @@ function makeChar(col, style) {
     roughness: 0.25,
     flatShading: true,
     emissive: col,
-    emissiveIntensity: 0.2
+    emissiveIntensity: 0.25
   });
   const body = new THREE.Mesh(new THREE.SphereGeometry(0.48, 12, 10), bodyMat);
   body.scale.set(1, 1.15, 0.95);
   body.position.y = 0.58;
   g.add(body);
 
-  // Glowing Cyber Visor
+  // Visor
   const visorMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
   const visor = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.4, 0.16, 12, 1, false, -1.2, 2.4), visorMat);
   visor.position.set(0, 0.68, 0.25);
   g.add(visor);
 
-  // Custom Cosmetic Hats
+  // Hats
   const hm = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.8, roughness: 0.3, flatShading: true });
   let h;
-  if (style === 1) { // Cyber Cone / Party Hat
+  if (style === 1) {
     h = new THREE.Mesh(new THREE.ConeGeometry(0.24, 0.55, 8), hm);
     h.position.y = 1.35;
-  } else if (style === 2) { // Sleek Top Hat
+  } else if (style === 2) {
     h = new THREE.Group();
     const brim = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.04, 12), hm);
     const crown = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.38, 12), hm);
     crown.position.y = 0.2;
     h.add(brim, crown);
     h.position.y = 1.25;
-  } else if (style === 3) { // Cyber Ears
+  } else if (style === 3) {
     h = new THREE.Group();
     [-0.28, 0.28].forEach(x => {
       const ear = new THREE.Mesh(new THREE.ConeGeometry(0.12, 0.45, 6), bodyMat);
@@ -967,7 +997,7 @@ function makeChar(col, style) {
       ear.rotation.z = x > 0 ? -0.3 : 0.3;
       h.add(ear);
     });
-  } else { // Antenna with pulsing glow beacon
+  } else {
     h = new THREE.Group();
     const stalk = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.42, 6), hm);
     stalk.position.y = 1.35;
@@ -977,7 +1007,7 @@ function makeChar(col, style) {
   }
   g.add(h);
 
-  // Weapon Model with illuminated energy coil
+  // Gun
   const gunMat = new THREE.MeshStandardMaterial({ color: 0x555566, metalness: 0.9, roughness: 0.2 });
   const gun = new THREE.Group();
   const gunBody = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.2, 0.42), gunMat);
@@ -991,18 +1021,35 @@ function makeChar(col, style) {
   gun.position.set(0.44, 0.52, 0.35);
   g.add(gun);
 
-  // Spherical Energy Shield (initially hidden)
-  const shieldMat = new THREE.MeshBasicMaterial({
-    color: 0x00f0ff,
-    wireframe: true,
-    transparent: true,
-    opacity: 0
-  });
+  // Energy Shield Bubble
+  const shieldMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true, transparent: true, opacity: 0 });
   const shieldMesh = new THREE.Mesh(new THREE.SphereGeometry(0.8, 14, 10), shieldMat);
   shieldMesh.position.y = 0.6;
   g.add(shieldMesh);
 
-  g.userData = { gunMat, gun, coil, shieldMesh };
+  // 3D ARENA GROUND RING (Shows your selection circle on the land!)
+  const groundRing = new THREE.Mesh(
+    new THREE.RingGeometry(0.52, 0.62, 32),
+    new THREE.MeshBasicMaterial({ color: col, side: THREE.DoubleSide, transparent: true, opacity: 0.85 })
+  );
+  groundRing.rotation.x = -Math.PI / 2;
+  groundRing.position.y = 0.04;
+  g.add(groundRing);
+
+  // 3D Laser Targeting Guide on the Land
+  const laserMat = new THREE.LineBasicMaterial({ color: col, transparent: true, opacity: 0.85, linewidth: 2 });
+  const laserGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0.05, 0), new THREE.Vector3(0, 0.05, 14)]);
+  const laserLine = new THREE.Line(laserGeo, laserMat);
+  laserLine.visible = false;
+  g.add(laserLine);
+
+  // Shotgun side laser guides
+  const sgL = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0.05, 0), new THREE.Vector3(-1.8, 0.05, 8)]), laserMat);
+  const sgR = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0.05, 0), new THREE.Vector3(1.8, 0.05, 8)]), laserMat);
+  sgL.visible = false; sgR.visible = false;
+  g.add(sgL, sgR);
+
+  g.userData = { gunMat, gun, coil, shieldMesh, groundRing, laserLine, sgL, sgR };
   return g;
 }
 
@@ -1070,8 +1117,14 @@ function cleanup() {
   B.forEach(b => scene.remove(b.m));
   B = [];
   pool.forEach(q => { q.l = 0; q.m.visible = false; });
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
   $('touchControls').classList.remove('active');
+}
+
+/* Determines if player is locally controlled and should be seen on 3D land */
+function isLocalHuman(p) {
+  if (NET.role === 'client') return p.i === NET.slot;
+  if (NET.role === 'host') return p.i === 0;
+  return !p.bot && !p.remote;
 }
 
 function startMatch(fresh, spec) {
@@ -1107,7 +1160,6 @@ function startMatch(fresh, spec) {
 
   idx.forEach((i, k) => {
     const g = makeChar(COLORS[i], slots[i].s);
-    g.visible = false;
     scene.add(g);
     const an = (k / idx.length) * 6.2832 + 0.4, r = G.R * 0.55;
     const x = Math.sin(an) * r, z = Math.cos(an) * r;
@@ -1136,28 +1188,15 @@ function startMatch(fresh, spec) {
       pk: ''
     };
     pushPillar(p);
-    G.ps.push(p);
+    
+    // Position directly on the 3D land!
+    p.g.position.set(p.x, 0, p.z);
+    p.g.rotation.y = p.a;
 
-    if (!p.bot && !p.remote) {
-      const el = document.querySelector('.p' + i);
-      el.classList.add('on');
-      el.style.borderColor = hex(p.col);
-      el.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <b style="color:${hex(p.col)}">P${i + 1}</b>
-          <span class="pi"></span>
-        </div>
-        <canvas width="320" height="320"></canvas>
-        <div class="energy-bar-wrap"><div class="energy-bar-fill"></div></div>
-        <div class="pt"></div>
-        <div style="color:#7888b5;font-size:10px">${ctl[p.ki].map(keyName).join(' ')}</div>
-      `;
-      p.el = el;
-      p.cv = el.querySelector('canvas');
-      p.pi = el.querySelector('.pi');
-      p.pt = el.querySelector('.pt');
-      p.enFill = el.querySelector('.energy-bar-fill');
-    }
+    // Only your own character is visible on the 3D arena during aiming! Opponents stay hidden!
+    p.g.visible = isLocalHuman(p);
+    
+    G.ps.push(p);
   });
 
   ['menu', 'setup', 'settings', 'pause', 'win', 'online'].forEach(s => $(s).classList.remove('on'));
@@ -1201,11 +1240,26 @@ function nextRound() {
     if (NET.role !== 'client') roll(p);
     p.energy = p.boost ? 9.5 : 5.5;
     p.maxEnergy = p.energy;
-    p.g.visible = false;
+
+    // Direct 3D Land Placement: Local player is ALWAYS visible to themselves on the land!
+    p.g.visible = isLocalHuman(p);
     p.g.scale.set(1, 1, 1);
     p.g.position.set(p.x, 0, p.z);
+    p.g.rotation.y = p.a;
     p.g.userData.shieldMesh.material.opacity = p.shield ? 0.6 : 0;
+    
+    // Weapon Color Sync on gun coils
+    const w = W[p.weapon];
+    p.g.userData.gunMat.color.setHex(w.c);
+    p.g.userData.coil.material.color.setHex(w.c);
+
+    // Show 3D laser sights on the land for local player
+    const showLaser = isLocalHuman(p);
+    p.g.userData.laserLine.visible = showLaser;
+    p.g.userData.sgL.visible = showLaser && p.weapon === 'shotgun';
+    p.g.userData.sgR.visible = showLaser && p.weapon === 'shotgun';
   });
+
   G.phase = 'prep';
   G.t = 2.4;
   say('ROUND ' + G.round, G.rings > MINR ? 'RED WARNING RING FALLS AFTER THIS ROUND' : 'FINAL ARENA COLLAPSE', 2000, '#00f0ff');
@@ -1234,10 +1288,20 @@ function startAim() {
   G.phase = 'aim';
   G.t = 10;
   G.lastN = 11;
-  say('AIM IN SECRET', 'OPPONENTS ARE INVISIBLE', 1100, '#00f0ff');
+  say('MOVE & AIM ON THE LAND', 'OPPONENTS ARE INVISIBLE', 1100, '#00f0ff');
   sfx('go');
   resetTouchFireBtn();
-  G.ps.forEach(p => p.alive && p.bot && botPlan(p));
+
+  // Ensure local player laser sight is on
+  G.ps.forEach(p => {
+    if (isLocalHuman(p) && p.alive) {
+      p.g.visible = true;
+      p.g.userData.laserLine.visible = true;
+      p.g.userData.sgL.visible = (p.weapon === 'shotgun');
+      p.g.userData.sgR.visible = (p.weapon === 'shotgun');
+    }
+    if (p.alive && p.bot) botPlan(p);
+  });
 }
 
 function lock(p) {
@@ -1248,6 +1312,8 @@ function lock(p) {
     const b = $('touchFireBtn');
     b.classList.add('locked');
     $('touchFireLabel').textContent = 'LOCKED';
+    $('hudLockState').textContent = 'LOCKED ✓';
+    $('hudLockState').style.color = 'var(--green)';
   }
 }
 
@@ -1257,6 +1323,15 @@ function step(p, dx, dz, dt) {
   p.z += dz * d;
   p.energy -= d;
   pushPillar(p);
+  
+  // Directly update 3D mesh position on the land!
+  p.g.position.set(p.x, 0, p.z);
+
+  // Thruster particles on the arena floor when moving
+  if (p.g.visible && Math.random() < 0.5) {
+    emit(p.x - dx * 0.4, 0.15, p.z - dz * 0.4, p.col, 1, 0.4, 0.2, 0.8, 0);
+  }
+
   p.fs -= dt;
   if (p.fs <= 0) {
     p.fs = 0.28;
@@ -1279,6 +1354,7 @@ function updAim(dt) {
       }
       if (el >= p.lk) {
         p.a = p.aimA;
+        p.g.rotation.y = p.a;
         lock(p);
       }
       return;
@@ -1298,14 +1374,16 @@ function updAim(dt) {
       if (touchState.turnLeft) L = true;
       if (touchState.turnRight) R = true;
       if (touchState.moveForward) F = true;
-      if (touchState.analogX) p.a -= touchState.analogX * 2.8 * dt;
+      if (touchState.analogX) p.a -= touchState.analogX * 3.2 * dt;
     }
 
     const sh = bt(0);
     if (sh && !p.gl) lock(p);
     p.gl = sh;
 
-    p.a += ((L ? 1 : 0) - (R ? 1 : 0)) * 2.8 * dt;
+    p.a += ((L ? 1 : 0) - (R ? 1 : 0)) * 3.0 * dt;
+    p.g.rotation.y = p.a;
+
     if (F && p.energy > 0) step(p, Math.sin(p.a), Math.cos(p.a), dt);
   });
 }
@@ -1317,16 +1395,22 @@ function startReveal() {
   G.phase = 'reveal';
   G.t = 0.95;
   sfx('reveal');
-  say('MATERIALIZING!', 'ALL SIGHTINGS CONFIRMED', 950, '#ff2bd6');
+  say('MATERIALIZING!', 'ALL SIGHTINGS REVEALED', 950, '#ff2bd6');
   shake = 0.5;
   screenFlash('rgba(255, 43, 214, 0.4)', 0.4);
 
+  // Turn off laser sight lines during reveal
   G.ps.forEach(p => {
+    if (p.g.userData.laserLine) p.g.userData.laserLine.visible = false;
+    if (p.g.userData.sgL) p.g.userData.sgL.visible = false;
+    if (p.g.userData.sgR) p.g.userData.sgR.visible = false;
+    
     if (!p.alive) return;
     p.g.visible = true;
     p.g.position.set(p.x, 0, p.z);
     p.g.rotation.set(0, p.a, 0);
     p.g.scale.setScalar(0.01);
+
     const w = W[p.weapon];
     p.g.userData.gunMat.color.setHex(w.c);
     p.g.userData.coil.material.color.setHex(w.c);
@@ -1372,7 +1456,6 @@ function fire(p) {
   emit(ox, 0.58, oz, 0xffffcc, 12, 4.5, 0.3, 1.6, 0);
   shake = Math.max(shake, 0.35);
 
-  // Muzzle flash point light
   blastLight.color.setHex(w === 'laser' ? 0xff1155 : 0xffffaa);
   blastLight.position.set(ox, 1.2, oz);
   blastLight.intensity = 4.5;
@@ -1408,7 +1491,6 @@ function updBullets(dt) {
       b.x += b.dx * st;
       b.z += b.dz * st;
 
-      // Check pillar collisions
       for (const [px, pz, pr] of MAPS[S.map].pil) {
         const dx = b.x - px, dz = b.z - pz, d = Math.hypot(dx, dz);
         if (d < pr + 0.14) {
@@ -1424,7 +1506,6 @@ function updBullets(dt) {
         }
       }
 
-      // Check ricochet arena bounds
       if (b.bn > 0) {
         const r = Math.hypot(b.x, b.z);
         if (r > G.R && b.dx * b.x + b.dz * b.z > 0) {
@@ -1436,7 +1517,6 @@ function updBullets(dt) {
 
       if (b.dead) break;
 
-      // Check Player Hits
       for (const q of G.ps) {
         if (!q.alive || b.hit.includes(q) || (q === b.p && b.age < 0.2)) continue;
         if (Math.hypot(q.x - b.x, q.z - b.z) < 0.52) {
@@ -1495,7 +1575,6 @@ function kill(q, by, cause, dx = 0, dz = 0) {
   shake = Math.max(shake, 0.8);
   screenFlash(cause === 'shot' ? 'rgba(255, 71, 109, 0.5)' : 'rgba(0, 240, 255, 0.4)', 0.4);
 
-  // Slow-motion dramatic finish
   if (!G.slowDone && aliveTeams() <= 1) {
     G.slowDone = true;
     G.slowT = 1.8;
@@ -1687,118 +1766,30 @@ function update(dt, rdt) {
   updTiles(dt);
 }
 
-/* ---------- RADAR CANVAS & HUD RENDERING ---------- */
+/* ---------- HUD & TELEMETRY RENDERING ---------- */
 const keyName = c => c.replace('Key', '').replace('Digit', '').replace('ArrowLeft', '←').replace('ArrowRight', '→').replace('ArrowUp', '↑').replace('ArrowDown', '↓').replace('Numpad', 'Num');
 
-function drawPanel(p) {
-  const c = p.cv, x = c.getContext('2d'), Wd = c.width, sc = (Wd / 2) / (RINGS * RW + 0.5), M = MAPS[S.map];
-  x.clearRect(0, 0, Wd, Wd);
-  x.save();
-  x.translate(Wd / 2, Wd / 2);
-
-  // Background radar circles
-  x.fillStyle = '#060a24';
-  x.beginPath();
-  x.arc(0, 0, G.R * sc, 0, 7);
-  x.fill();
-
-  // Grid concentric rings
-  for (let r = 1; r < G.rings; r++) {
-    x.strokeStyle = 'rgba(0, 240, 255, 0.12)';
-    x.lineWidth = 1;
-    x.beginPath();
-    x.arc(0, 0, r * RW * sc, 0, 7);
-    x.stroke();
-  }
-
-  // Neon boundary
-  x.strokeStyle = hex(M.a);
-  x.lineWidth = 3;
-  x.beginPath();
-  x.arc(0, 0, G.R * sc, 0, 7);
-  x.stroke();
-
-  // Outer collapsing ring hazard highlight
-  if (G.rings > MINR) {
-    x.strokeStyle = 'rgba(255, 50, 80, ' + (0.35 + 0.3 * Math.sin(time * 8)) + ')';
-    x.lineWidth = RW * sc;
-    x.beginPath();
-    x.arc(0, 0, (G.R - RW / 2) * sc, 0, 7);
-    x.stroke();
-  }
-
-  // Radar sweep scanline
-  const sweepAngle = (time * 2.2) % 6.283;
-  x.save();
-  x.rotate(sweepAngle);
-  const grad = x.createLinearGradient(0, 0, G.R * sc, 0);
-  grad.addColorStop(0, 'rgba(0, 240, 255, 0)');
-  grad.addColorStop(1, 'rgba(0, 240, 255, 0.3)');
-  x.fillStyle = grad;
-  x.beginPath();
-  x.moveTo(0, 0);
-  x.arc(0, 0, G.R * sc, 0, 0.4);
-  x.lineTo(0, 0);
-  x.fill();
-  x.restore();
-
-  // Obstacle Pillars
-  x.fillStyle = '#68789d';
-  M.pil.forEach(([px, pz, pr]) => {
-    x.beginPath();
-    x.arc(px * sc, pz * sc, pr * sc, 0, 7);
-    x.fill();
-    x.strokeStyle = 'rgba(255,255,255,0.3)';
-    x.lineWidth = 1.5;
-    x.stroke();
-  });
-
-  // Player Position & Aim Trajectory
-  if (p.alive) {
-    const px = p.x * sc, pz = p.z * sc, a = p.a;
-
-    // Laser sight trajectory line
-    x.strokeStyle = hex(p.col);
-    x.lineWidth = 3;
-    x.setLineDash([8, 6]);
-    const ray = (an, len) => {
-      x.beginPath();
-      x.moveTo(px, pz);
-      x.lineTo(px + Math.sin(an) * len * sc, pz + Math.cos(an) * len * sc);
-      x.stroke();
-    };
-    if (p.weapon === 'shotgun') {
-      [-3, 0, 3].forEach(k => ray(a + k * 0.11, 7.5));
-    } else {
-      ray(a, p.weapon === 'ric' ? 14 : 18);
-    }
-    x.setLineDash([]);
-
-    // Player position blip
-    x.fillStyle = hex(p.col);
-    x.beginPath();
-    x.arc(px, pz, 0.48 * sc, 0, 7);
-    x.fill();
-
-    // Nose pointer
-    x.fillStyle = '#ffffff';
-    x.beginPath();
-    x.arc(px + Math.sin(a) * 0.35 * sc, pz + Math.cos(a) * 0.35 * sc, 0.18 * sc, 0, 7);
-    x.fill();
-  }
-  x.restore();
-}
-
 function hud(rdt) {
-  G.ps.forEach(p => {
-    if (p.bot || p.remote) return;
-    drawPanel(p);
-    p.el.style.opacity = p.alive ? (G.phase === 'aim' ? '1' : '0.5') : '0.22';
-    if (p.enFill) {
-      const pct = Math.max(0, Math.min(100, (p.energy / (p.maxEnergy || 5.5)) * 100));
-      p.enFill.style.width = pct + '%';
+  // Update Primary Player Telemetry Bar (Replaces the tiny left box!)
+  const p1 = G.ps[0];
+  if (p1) {
+    const w = W[p1.weapon];
+    $('hudWeapon').innerHTML = `<span style="color:${hex(w.c)}">${w.i} ${w.n}</span>`;
+    const pct = Math.max(0, Math.min(100, (p1.energy / (p1.maxEnergy || 5.5)) * 100));
+    $('hudEnergyFill').style.width = pct + '%';
+    $('hudPowerup').textContent = p1.pk || 'NONE';
+    $('hudPowerup').style.color = p1.shield ? 'var(--cyan)' : p1.boost ? 'var(--amber)' : '#888';
+    if (!p1.alive) {
+      $('hudLockState').textContent = 'ELIMINATED';
+      $('hudLockState').style.color = '#ff476d';
+    } else if (p1.locked) {
+      $('hudLockState').textContent = 'LOCKED ✓';
+      $('hudLockState').style.color = 'var(--green)';
+    } else {
+      $('hudLockState').textContent = G.phase === 'aim' ? 'AIMING ON LAND' : 'STANDBY';
+      $('hudLockState').style.color = 'var(--cyan)';
     }
-  });
+  }
 
   G.hudT -= rdt;
   if (G.hudT > 0) return;
@@ -1819,18 +1810,6 @@ function hud(rdt) {
     (G.rings > MINR ? 'AIM IN SECRET · RED RING CRUMBLES NEXT' : 'FINAL ARENA DUEL') :
     ph === 'prep' ? 'PREPARE TRAJECTORIES' :
     ph === 'fire' || ph === 'reveal' ? 'SYNCHRONIZED DISCHARGE' : '';
-
-  G.ps.forEach(p => {
-    if (p.bot || p.remote) return;
-    const w = W[p.weapon];
-    p.pi.textContent = w.i + ' ' + w.n;
-    p.pt.innerHTML = !p.alive ?
-      '<span style="color:#ff476d">ELIMINATED</span>' :
-      p.locked ?
-      '<span class="lk">LOCKED ✓ READY</span>' :
-      `LOCK: [${keyName(ctl[p.ki][3])}] · THRUST: ${Math.max(0, p.energy).toFixed(1)}m`;
-    if (p.alive && p.pk && !p.locked) p.pt.innerHTML += ' · ' + p.pk;
-  });
 }
 
 /* ---------- TOUCH CONTROLS ENGINE ---------- */
@@ -1905,8 +1884,8 @@ function handleJoystickMove(clientX, clientY) {
   stick.style.transform = `translate(${sx}px, ${sy}px)`;
 
   touchState.analogX = sx / maxDist;
-  touchState.turnLeft = sx < -14;
-  touchState.turnRight = sx > 14;
+  touchState.turnLeft = sx < -12;
+  touchState.turnRight = sx > 12;
   touchState.moveForward = sy < -10;
 }
 
@@ -1926,6 +1905,20 @@ $('touchFireBtn').addEventListener('touchstart', e => {
   e.preventDefault();
 }, { passive: false });
 
+/* Landscape Lock Request */
+async function triggerLandscapeLock() {
+  au = true; ac();
+  try {
+    if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+      await document.documentElement.requestFullscreen();
+    }
+    if (screen.orientation && screen.orientation.lock) {
+      await screen.orientation.lock('landscape');
+    }
+  } catch(e) {}
+}
+$('btnRequestLandscape').onclick = triggerLandscapeLock;
+
 /* Quickbar Toggles */
 $('btnCrt').onclick = () => {
   sfx('uiClick');
@@ -1933,8 +1926,7 @@ $('btnCrt').onclick = () => {
 };
 $('btnFs').onclick = () => {
   sfx('uiClick');
-  if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
-  else document.exitFullscreen().catch(() => {});
+  triggerLandscapeLock();
 };
 
 /* ---------- MENUS & INTERACTION ---------- */
@@ -1956,6 +1948,7 @@ function toMenu() {
 function mkDemo() {
   for (let i = 0; i < 4; i++) {
     const c = makeChar(COLORS[i], i);
+    c.visible = true;
     scene.add(c);
     demo.push(c);
   }
@@ -2104,7 +2097,7 @@ function loop(ts) {
   if (G) {
     if (G.slowT > 0) {
       G.slowT -= rdt;
-      dt *= 0.28; // Dramatic bullet time
+      dt *= 0.28;
     }
     if (!G.paused) {
       update(dt, rdt);
@@ -2122,7 +2115,7 @@ function loop(ts) {
     });
   }
 
-  // Cinematic Camera Easing & Screenshake
+  // Camera positioning focused on 3D Land
   const asp = Math.max(1, 1.45 / cam.aspect);
   let tx, ty, tz;
   if (!G) {
@@ -2134,8 +2127,8 @@ function loop(ts) {
   } else {
     const R = G.R;
     tx = Math.sin(time * 0.22) * 1.3;
-    ty = (7.5 + R * 0.68) * asp;
-    tz = (6.5 + R * 0.62) * asp;
+    ty = (7.2 + R * 0.65) * asp;
+    tz = (6.2 + R * 0.6) * asp;
   }
 
   cp.lerp(new THREE.Vector3(tx, ty, tz), 0.055);
@@ -2288,7 +2281,7 @@ function hostPeers(ch) {
   const hids = new Set(ch.peers.map(p => p.presence.hid));
   slots.forEach(s => {
     if (s.t === 3 && !hids.has(s.hid)) {
-      s.t = 2; // fallback to bot if remote leaves
+      s.t = 2;
       delete s.hid;
     }
   });
@@ -2326,6 +2319,8 @@ function hostIn(d) {
   p.x = cl(d.x);
   p.z = cl(d.z);
   pushPillar(p);
+  p.g.position.set(p.x, 0, p.z);
+  p.g.rotation.y = p.a;
   if (d.l) lock(p);
 }
 
