@@ -21,7 +21,13 @@
   --border-neon: 1px solid rgba(0, 240, 255, 0.32);
   --glass: blur(14px);
 }
-* { box-sizing: border-box; margin: 0; padding: 0; touch-action: manipulation; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  touch-action: none; /* Crucial for preventing mobile scroll/pan gestures */
+  -webkit-touch-callout: none;
+}
 html, body {
   height: 100%;
   width: 100%;
@@ -34,7 +40,7 @@ html, body {
 }
 
 /* 3D Canvas */
-#gl { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; outline: none; }
+#gl { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; outline: none; touch-action: none; }
 
 /* CRT Scanline & Vignette Overlay */
 #vignette {
@@ -73,15 +79,16 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 16px;
   text-align: center;
   padding: 24px;
+  touch-action: auto;
 }
 @media screen and (orientation: portrait) and (max-width: 950px) {
-  #rotateOverlay { display: flex !important; }
+  #rotateOverlay:not(.dismissed) { display: flex !important; }
 }
 .rotate-phone-anim {
-  width: 72px; height: 72px;
+  width: 68px; height: 68px;
   border: 3px solid var(--cyan);
   border-radius: 14px;
   position: relative;
@@ -91,7 +98,7 @@ html, body {
 .rotate-phone-anim::after {
   content: '';
   position: absolute;
-  top: 8px; left: 50%;
+  top: 6px; left: 50%;
   transform: translateX(-50%);
   width: 16px; height: 4px;
   background: var(--pink);
@@ -119,6 +126,7 @@ html, body {
   text-align: center;
   overflow-y: auto;
   animation: fadeIn 0.25s ease-out;
+  touch-action: auto;
 }
 .scr.on { display: flex; }
 @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
@@ -126,7 +134,7 @@ html, body {
 /* Typography */
 h1 {
   font-family: var(--font-display);
-  font-size: clamp(32px, 6vw, 76px);
+  font-size: clamp(30px, 5.5vw, 72px);
   font-weight: 900;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -143,7 +151,7 @@ h1 {
 }
 h2 {
   font-family: var(--font-display);
-  font-size: clamp(20px, 4vw, 36px);
+  font-size: clamp(18px, 3.5vw, 34px);
   letter-spacing: 0.1em;
   color: #fff;
   text-shadow: 0 0 16px var(--cyan);
@@ -163,7 +171,7 @@ h3::before, h3::after {
   content: '';
   display: inline-block;
   height: 1px;
-  width: 22px;
+  width: 20px;
   background: rgba(0, 240, 255, 0.4);
 }
 
@@ -183,6 +191,7 @@ button {
   transition: all 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
   position: relative;
   overflow: hidden;
+  touch-action: manipulation;
 }
 button:hover {
   transform: translateY(-2px);
@@ -198,8 +207,8 @@ button.sel {
   box-shadow: 0 0 20px rgba(0, 240, 255, 0.5), inset 0 0 14px rgba(255, 43, 214, 0.35);
 }
 button.big {
-  font-size: 17px;
-  padding: 12px 30px;
+  font-size: 16px;
+  padding: 12px 28px;
   letter-spacing: 0.12em;
   background: linear-gradient(135deg, rgba(0, 204, 255, 0.25) 0%, rgba(255, 43, 214, 0.35) 100%);
   border: 1px solid var(--cyan);
@@ -245,6 +254,7 @@ input#jc {
   border: 1px solid var(--cyan);
   background: rgba(10, 14, 46, 0.9);
   color: #fff;
+  touch-action: auto;
 }
 #rc { font-family: var(--font-display); font-size: 20px; letter-spacing: 0.2em; color: var(--cyan); font-weight: 900; }
 .bind { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center; margin: 3px 0; }
@@ -289,7 +299,7 @@ th { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.1em; c
 }
 #tn {
   font-family: var(--font-display);
-  font-size: clamp(40px, 8vw, 76px);
+  font-size: clamp(38px, 7vw, 70px);
   font-weight: 900;
   line-height: 1;
   color: #fff;
@@ -311,10 +321,10 @@ th { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.1em; c
   color: var(--amber);
 }
 #banner {
-  position: absolute; top: 32%; left: 0; right: 0;
+  position: absolute; top: 30%; left: 0; right: 0;
   text-align: center;
   font-family: var(--font-display);
-  font-size: clamp(30px, 7vw, 72px);
+  font-size: clamp(28px, 6.5vw, 68px);
   font-weight: 900;
   text-shadow: 0 0 35px var(--cyan), 0 4px 0 #000;
   opacity: 0;
@@ -336,7 +346,7 @@ th { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.1em; c
 
 /* Feed */
 #feed {
-  position: absolute; right: 14px; top: 40%;
+  position: absolute; right: 14px; top: 38%;
   display: flex; flex-direction: column; gap: 5px; align-items: flex-end;
   pointer-events: none;
 }
@@ -352,7 +362,7 @@ th { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.1em; c
 }
 @keyframes slideIn { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-/* NEW IMMERSIVE TACTICAL BOTTOM HUD (Replaces the tiny left box!) */
+/* IMMERSIVE BOTTOM TELEMETRY (Direct 3D Land Mode) */
 #playerTelemetry {
   position: absolute;
   bottom: 12px;
@@ -391,7 +401,7 @@ th { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.1em; c
   color: #fff;
 }
 .energy-bar-wrap {
-  width: 120px;
+  width: 110px;
   height: 8px;
   background: rgba(255,255,255,0.12);
   border-radius: 4px;
@@ -405,80 +415,99 @@ th { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.1em; c
   transition: width 0.1s linear;
 }
 
-/* On-Screen Mobile Landscape Touch Controls */
+/* MOBILE TOUCH SYSTEM: FULLSCREEN DUAL-ZONE CONTROLS */
 #touchControls {
   position: fixed;
   inset: 0;
-  pointer-events: none;
   z-index: 9;
   display: none;
+  pointer-events: none;
+  touch-action: none;
 }
 #touchControls.active { display: block; }
 
-/* Left Virtual Thumbpad Joystick */
-#touchLeft {
+/* Left Half: Dynamic Floating Joystick Zone (Touch anywhere on left 50%!) */
+#touchLeftZone {
   position: absolute;
-  left: 20px;
-  bottom: 20px;
-  width: 160px;
-  height: 160px;
+  left: 0; top: 0; bottom: 0;
+  width: 50vw;
   pointer-events: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  touch-action: none;
 }
+
+/* Floating Visual Joystick Base & Stick */
 #joystickBase {
   position: absolute;
   width: 130px;
   height: 130px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.18) 0%, rgba(5, 10, 35, 0.65) 100%);
-  border: 2px solid rgba(0, 240, 255, 0.5);
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.35), inset 0 0 15px rgba(0, 240, 255, 0.2);
-  display: flex;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.22) 0%, rgba(5, 10, 35, 0.72) 100%);
+  border: 2px solid rgba(0, 240, 255, 0.6);
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.45), inset 0 0 15px rgba(0, 240, 255, 0.25);
+  display: none; /* Appears immediately wherever you touch! */
   align-items: center;
   justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+  transform: translate(0, 0);
 }
 #joystickStick {
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   background: radial-gradient(circle, #00f0ff 0%, #0c3b6b 100%);
-  border: 2px solid #fff;
-  box-shadow: 0 0 16px rgba(0, 240, 255, 0.9);
+  border: 2.5px solid #fff;
+  box-shadow: 0 0 18px rgba(0, 240, 255, 0.95);
   transform: translate(0px, 0px);
   pointer-events: none;
-  transition: transform 0.04s ease-out;
+  transition: transform 0.03s linear;
 }
-.dpad-hint {
-  position: absolute;
-  font-family: var(--font-display);
-  font-size: 10px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.55);
-  pointer-events: none;
-}
-.dpad-up { top: 6px; }
-.dpad-left { left: 8px; }
-.dpad-right { right: 8px; }
 
-/* Right Shoot / Lock Action Button */
-#touchRight {
+/* Static Hint Ring when not touching */
+#touchStaticHint {
   position: absolute;
-  right: 24px;
-  bottom: 20px;
-  pointer-events: auto;
+  left: 24px;
+  bottom: 24px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px dashed rgba(0, 240, 255, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: rgba(0, 240, 255, 0.75);
+  font-weight: 700;
+  pointer-events: none;
+  animation: pulseHint 2s infinite ease-in-out;
+}
+@keyframes pulseHint { 0%, 100% { opacity: 0.5; } 50% { opacity: 0.9; } }
+
+/* Right Half: Action & Lock Zone */
+#touchRightZone {
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 50vw;
+  pointer-events: none;
+  touch-action: none;
 }
 #touchFireBtn {
-  width: 86px;
-  height: 86px;
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  width: 92px;
+  height: 92px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 43, 214, 0.45) 0%, rgba(20, 10, 45, 0.92) 100%);
-  border: 2.5px solid var(--pink);
-  box-shadow: 0 0 25px rgba(255, 43, 214, 0.65), inset 0 0 15px rgba(255, 43, 214, 0.35);
+  pointer-events: auto;
+  background: radial-gradient(circle, rgba(255, 43, 214, 0.48) 0%, rgba(20, 10, 45, 0.95) 100%);
+  border: 3px solid var(--pink);
+  box-shadow: 0 0 30px rgba(255, 43, 214, 0.7), inset 0 0 18px rgba(255, 43, 214, 0.4);
   color: #fff;
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 900;
   letter-spacing: 0.08em;
   display: flex;
@@ -489,15 +518,16 @@ th { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.1em; c
   cursor: pointer;
   outline: none;
   transition: transform .12s, box-shadow .12s;
+  pointer-events: auto;
 }
 #touchFireBtn:active {
   transform: scale(0.92);
-  box-shadow: 0 0 35px rgba(255, 43, 214, 0.9);
+  box-shadow: 0 0 40px rgba(255, 43, 214, 0.95);
 }
 #touchFireBtn.locked {
-  background: radial-gradient(circle, rgba(0, 255, 136, 0.45) 0%, rgba(10, 35, 25, 0.95) 100%);
+  background: radial-gradient(circle, rgba(0, 255, 136, 0.5) 0%, rgba(10, 35, 25, 0.95) 100%);
   border-color: var(--green);
-  box-shadow: 0 0 25px rgba(0, 255, 136, 0.7);
+  box-shadow: 0 0 30px rgba(0, 255, 136, 0.8);
   color: var(--green);
 }
 
@@ -521,16 +551,14 @@ th { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.1em; c
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
-.icon-btn:hover { border-color: var(--cyan); box-shadow: 0 0 12px rgba(0,240,255,0.4); }
 
 @media (max-height: 500px) {
-  #tm { top: 38px; }
+  #tm { top: 36px; }
   #status { top: 6px; }
-  #touchLeft { width: 130px; height: 130px; left: 14px; bottom: 10px; }
+  #touchStaticHint { width: 90px; height: 90px; left: 16px; bottom: 12px; font-size: 9px; }
   #joystickBase { width: 110px; height: 110px; }
-  #joystickStick { width: 44px; height: 44px; }
-  #touchRight { right: 16px; bottom: 10px; }
-  #touchFireBtn { width: 72px; height: 72px; font-size: 11px; }
+  #joystickStick { width: 46px; height: 46px; }
+  #touchFireBtn { width: 78px; height: 78px; font-size: 12px; right: 16px; bottom: 14px; }
   #playerTelemetry { bottom: 6px; padding: 4px 12px; gap: 10px; }
   .energy-bar-wrap { width: 80px; }
 }
@@ -547,9 +575,10 @@ th { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.1em; c
   <div class="rotate-phone-anim"></div>
   <h2>ROTATE DEVICE TO LANDSCAPE</h2>
   <small class="dim" style="font-size:15px">
-    Blind Bullet requires a widescreen tactical view for full 3D combat and dual-thumb touch controls.
+    Blind Bullet requires widescreen view for direct 3D arena combat and dual-thumb joystick controls.
   </small>
   <button class="big" id="btnRequestLandscape">TAP TO ROTATE / FULLSCREEN</button>
+  <button id="btnDismissRotate" style="font-size:11px;opacity:0.75;padding:6px 12px">CONTINUE IN PORTRAIT ANYWAY</button>
 </div>
 
 <div id="quickBar">
@@ -568,7 +597,7 @@ th { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.1em; c
   <div id="banner"></div>
   <div id="feed"></div>
   
-  <!-- Sleek Bottom Telemetry Bar (No tiny left box!) -->
+  <!-- Direct 3D Arena Telemetry Bar -->
   <div id="playerTelemetry">
     <div class="telem-section">
       <div class="telem-label">WEAPON</div>
@@ -589,19 +618,23 @@ th { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.1em; c
   </div>
 </div>
 
-<!-- TOUCH CONTROLS (Mobile Landscape) -->
+<!-- FULLSCREEN DUAL-ZONE TOUCH SYSTEM -->
 <div id="touchControls">
-  <div id="touchLeft">
+  <!-- Left 50% Touch Zone: Dynamic Floating Joystick -->
+  <div id="touchLeftZone">
+    <div id="touchStaticHint">
+      <span>TOUCH & SLIDE</span>
+      <span style="font-size:9px;color:#fff">TO MOVE ON LAND</span>
+    </div>
     <div id="joystickBase">
-      <div class="dpad-hint dpad-up">▲ THRUST</div>
-      <div class="dpad-hint dpad-left">◀</div>
-      <div class="dpad-hint dpad-right">▶</div>
       <div id="joystickStick"></div>
     </div>
   </div>
-  <div id="touchRight">
+  
+  <!-- Right 50% Touch Zone: Action & Lock -->
+  <div id="touchRightZone">
     <button id="touchFireBtn">
-      <span style="font-size:20px">🎯</span>
+      <span style="font-size:22px">🎯</span>
       <span id="touchFireLabel">LOCK</span>
     </button>
   </div>
@@ -610,7 +643,7 @@ th { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.1em; c
 <!-- MAIN MENU -->
 <div class="scr on" id="menu">
   <h1>BLIND BULLET</h1>
-  <small class="dim">Aim in secret directly on the arena. Opponents remain invisible until the reveal. Everyone discharges together. The last survivor standing claims glory.</small>
+  <small class="dim">Move and aim directly on the 3D arena. Opponents remain invisible until the reveal. Everyone discharges together. The last survivor wins.</small>
   <div class="row" style="margin-top:14px">
     <button class="big" id="bPlay">PLAY LOCAL</button>
     <button class="big" id="bOn">PLAY ONLINE</button>
@@ -650,7 +683,7 @@ th { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.1em; c
   </div>
   <h3>KEYBOARD & GAMEPAD BINDINGS</h3>
   <div id="binds" class="card-grid"></div>
-  <small class="dim">Gamepads: Left stick turns & moves forward, Button A locks aim. Pad 1 controls P1.</small>
+  <small class="dim">Desktop: WASD or Arrows to move/aim, S / Down to lock. Mobile: Touch & slide anywhere on left side to move in that direction!</small>
   <button id="bBack2" style="margin-top:8px">BACK</button>
 </div>
 
@@ -692,7 +725,7 @@ th { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.1em; c
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <script>
-/* ---------- CORE SYSTEM & STATE ---------- */
+/* ---------- CORE CONFIGURATION ---------- */
 const $ = id => document.getElementById(id), rnd = (a, b) => a + Math.random() * (b - a);
 const COLORS = [0x00e5ff, 0xff3b6b, 0xffd23f, 0x00ff88];
 const COLOR_NAMES = ['CYAN', 'MAGENTA', 'AMBER', 'MINT'];
@@ -834,11 +867,11 @@ scene.add(blastLight);
 function resize() {
   rdr.setSize(window.innerWidth, window.innerHeight, false);
   cam.aspect = window.innerWidth / window.innerHeight;
-  // Dynamic FOV adjustment: wider on landscape mobile so the entire 3D arena is in full view!
   if (cam.aspect < 1.4) cam.fov = 58;
   else if (cam.aspect < 1.8) cam.fov = 50;
   else cam.fov = 46;
   cam.updateProjectionMatrix();
+  if (typeof updateTouchVisibility === 'function') updateTouchVisibility();
 }
 window.addEventListener('resize', resize);
 window.addEventListener('orientationchange', () => setTimeout(resize, 200));
@@ -1027,23 +1060,23 @@ function makeChar(col, style) {
   shieldMesh.position.y = 0.6;
   g.add(shieldMesh);
 
-  // 3D ARENA GROUND RING (Shows your selection circle on the land!)
+  // 3D ARENA GROUND RING
   const groundRing = new THREE.Mesh(
-    new THREE.RingGeometry(0.52, 0.62, 32),
+    new THREE.RingGeometry(0.55, 0.68, 32),
     new THREE.MeshBasicMaterial({ color: col, side: THREE.DoubleSide, transparent: true, opacity: 0.85 })
   );
   groundRing.rotation.x = -Math.PI / 2;
   groundRing.position.y = 0.04;
   g.add(groundRing);
 
-  // 3D Laser Targeting Guide on the Land
+  // 3D Laser Targeting Guide on the Arena Land
   const laserMat = new THREE.LineBasicMaterial({ color: col, transparent: true, opacity: 0.85, linewidth: 2 });
   const laserGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0.05, 0), new THREE.Vector3(0, 0.05, 14)]);
   const laserLine = new THREE.Line(laserGeo, laserMat);
   laserLine.visible = false;
   g.add(laserLine);
 
-  // Shotgun side laser guides
+  // Shotgun multi-line guides
   const sgL = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0.05, 0), new THREE.Vector3(-1.8, 0.05, 8)]), laserMat);
   const sgR = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0.05, 0), new THREE.Vector3(1.8, 0.05, 8)]), laserMat);
   sgL.visible = false; sgR.visible = false;
@@ -1150,7 +1183,7 @@ function startMatch(fresh, spec) {
     rings: RINGS,
     R: RINGS * RW,
     phase: 'prep',
-    t: 2.2,
+    t: 1.2,
     slowT: 0,
     slowDone: false,
     paused: false,
@@ -1180,7 +1213,8 @@ function startMatch(fresh, spec) {
       weapon: 'pistol',
       shield: false,
       boost: false,
-      energy: 5,
+      energy: 5.5,
+      maxEnergy: 5.5,
       died: 0,
       cause: '',
       fs: 0,
@@ -1193,7 +1227,7 @@ function startMatch(fresh, spec) {
     p.g.position.set(p.x, 0, p.z);
     p.g.rotation.y = p.a;
 
-    // Only your own character is visible on the 3D arena during aiming! Opponents stay hidden!
+    // Local player is visible directly on the 3D arena! Opponents stay hidden!
     p.g.visible = isLocalHuman(p);
     
     G.ps.push(p);
@@ -1207,7 +1241,7 @@ function startMatch(fresh, spec) {
     netSend({ k: 'start', mode: S.mode, map: S.map, tp: TP, pl: G.ps.map(p => ({ i: p.i, s: slots[p.i].s })) });
   }
   if (NET.role !== 'client') nextRound();
-  else { G.phase = 'prep'; G.t = 3; }
+  else { G.phase = 'prep'; G.t = 1.6; }
 }
 
 function pushPillar(p) {
@@ -1261,10 +1295,11 @@ function nextRound() {
   });
 
   G.phase = 'prep';
-  G.t = 2.4;
-  say('ROUND ' + G.round, G.rings > MINR ? 'RED WARNING RING FALLS AFTER THIS ROUND' : 'FINAL ARENA COLLAPSE', 2000, '#00f0ff');
+  G.t = 1.2;
+  say('ROUND ' + G.round, G.rings > MINR ? 'RED WARNING RING FALLS AFTER THIS ROUND' : 'FINAL ARENA COLLAPSE', 1600, '#00f0ff');
   sfx('go');
   resetTouchFireBtn();
+  updateTouchVisibility();
 
   if (NET.role === 'host') {
     netSend({ k: 'round', w: G.ps.map(p => [p.i, p.weapon, p.shield ? 1 : 0, p.boost ? 1 : 0, p.pk]) });
@@ -1288,11 +1323,11 @@ function startAim() {
   G.phase = 'aim';
   G.t = 10;
   G.lastN = 11;
-  say('MOVE & AIM ON THE LAND', 'OPPONENTS ARE INVISIBLE', 1100, '#00f0ff');
+  say('MOVE & AIM ON THE LAND', 'OPPONENTS ARE INVISIBLE', 1000, '#00f0ff');
   sfx('go');
   resetTouchFireBtn();
+  updateTouchVisibility();
 
-  // Ensure local player laser sight is on
   G.ps.forEach(p => {
     if (isLocalHuman(p) && p.alive) {
       p.g.visible = true;
@@ -1308,7 +1343,7 @@ function lock(p) {
   if (G.phase !== 'aim' || p.locked || !p.alive) return;
   p.locked = true;
   sfx('lock');
-  if (p.i === 0) {
+  if (isLocalHuman(p)) {
     const b = $('touchFireBtn');
     b.classList.add('locked');
     $('touchFireLabel').textContent = 'LOCKED';
@@ -1318,18 +1353,18 @@ function lock(p) {
 }
 
 function step(p, dx, dz, dt) {
-  const d = (p.boost ? 5.8 : 3.2) * dt;
+  const d = (p.boost ? 5.8 : 3.4) * dt;
   p.x += dx * d;
   p.z += dz * d;
-  p.energy -= d;
+  p.energy = Math.max(0, p.energy - d);
   pushPillar(p);
   
   // Directly update 3D mesh position on the land!
   p.g.position.set(p.x, 0, p.z);
 
   // Thruster particles on the arena floor when moving
-  if (p.g.visible && Math.random() < 0.5) {
-    emit(p.x - dx * 0.4, 0.15, p.z - dz * 0.4, p.col, 1, 0.4, 0.2, 0.8, 0);
+  if (p.g.visible && Math.random() < 0.6) {
+    emit(p.x - dx * 0.4, 0.15, p.z - dz * 0.4, p.col, 1, 0.4, 0.22, 0.8, 0);
   }
 
   p.fs -= dt;
@@ -1360,7 +1395,23 @@ function updAim(dt) {
       return;
     }
 
-    // Keyboard & Gamepad Inputs
+    // Local Human Touch Dynamic Joystick Handling
+    if (isLocalHuman(p) && touchState.active && touchState.dist > 6) {
+      // Calculate shortest angular difference towards targetAngle
+      let diff = (touchState.targetAngle - p.a) % 6.28318;
+      if (diff > Math.PI) diff -= 6.28318;
+      if (diff < -Math.PI) diff += 6.28318;
+      p.a += diff * Math.min(1, 22 * dt);
+      p.g.rotation.y = p.a;
+
+      // Move forward across the 3D arena platform in that direction!
+      if (touchState.dist > 10 && p.energy > 0) {
+        step(p, Math.sin(p.a), Math.cos(p.a), dt);
+      }
+      return;
+    }
+
+    // Keyboard & Gamepad Inputs (Desktop fallback)
     const k = ctl[p.ki];
     const gp = navigator.getGamepads ? navigator.getGamepads()[p.ki] : null;
     const bt = n => gp && gp.buttons[n] && gp.buttons[n].pressed;
@@ -1368,14 +1419,6 @@ function updAim(dt) {
     let L = down[k[0]] || (gp && gp.axes[0] < -0.4) || bt(14);
     let R = down[k[1]] || (gp && gp.axes[0] > 0.4) || bt(15);
     let F = down[k[2]] || (gp && gp.axes[1] < -0.4) || bt(12);
-
-    // Apply Virtual Touch inputs for P1
-    if (p.i === 0 && touchState.active) {
-      if (touchState.turnLeft) L = true;
-      if (touchState.turnRight) R = true;
-      if (touchState.moveForward) F = true;
-      if (touchState.analogX) p.a -= touchState.analogX * 3.2 * dt;
-    }
 
     const sh = bt(0);
     if (sh && !p.gl) lock(p);
@@ -1530,7 +1573,7 @@ function updBullets(dt) {
             if (NET.role === 'host') netSend({ k: 'sh', i: q.i });
             q.shield = false;
             q.g.userData.shieldMesh.material.opacity = 0;
-            emit(q.x, 0.7, q.z, 0x00f0ff, 32, 6, 0.6, 1.8, 0);
+            emit(q.x, 0.7, q.z, 0x00f0ff, 32, 5, 0.5, 1.6, 0);
             sfx('shield');
             screenFlash('rgba(0, 240, 255, 0.5)', 0.35);
             b.dead = true;
@@ -1719,6 +1762,8 @@ function update(dt, rdt) {
     const n = Math.ceil(G.t);
     if (n !== G.lastN && n <= 2) sfx('tick');
     G.lastN = n;
+    // Allow player to rotate/aim immediately during prep
+    updAim(dt);
     if (G.t <= 0 && !C) startAim();
   } else if (ph === 'aim') {
     updAim(dt);
@@ -1770,8 +1815,8 @@ function update(dt, rdt) {
 const keyName = c => c.replace('Key', '').replace('Digit', '').replace('ArrowLeft', '←').replace('ArrowRight', '→').replace('ArrowUp', '↑').replace('ArrowDown', '↓').replace('Numpad', 'Num');
 
 function hud(rdt) {
-  // Update Primary Player Telemetry Bar (Replaces the tiny left box!)
-  const p1 = G.ps[0];
+  // Update Primary Player Telemetry Bar (Direct 3D Land Mode)
+  const p1 = G.ps.find(p => isLocalHuman(p)) || G.ps[0];
   if (p1) {
     const w = W[p1.weapon];
     $('hudWeapon').innerHTML = `<span style="color:${hex(w.c)}">${w.i} ${w.n}</span>`;
@@ -1785,6 +1830,9 @@ function hud(rdt) {
     } else if (p1.locked) {
       $('hudLockState').textContent = 'LOCKED ✓';
       $('hudLockState').style.color = 'var(--green)';
+    } else if (p1.energy <= 0.05) {
+      $('hudLockState').textContent = 'THRUST EMPTY (AIM ONLY)';
+      $('hudLockState').style.color = 'var(--amber)';
     } else {
       $('hudLockState').textContent = G.phase === 'aim' ? 'AIMING ON LAND' : 'STANDBY';
       $('hudLockState').style.color = 'var(--cyan)';
@@ -1812,18 +1860,18 @@ function hud(rdt) {
     ph === 'fire' || ph === 'reveal' ? 'SYNCHRONIZED DISCHARGE' : '';
 }
 
-/* ---------- TOUCH CONTROLS ENGINE ---------- */
+/* ---------- ULTRA-RESPONSIVE DYNAMIC FLOATING JOYSTICK ---------- */
 const touchState = {
   active: false,
-  turnLeft: false,
-  turnRight: false,
-  moveForward: false,
-  analogX: 0,
-  touchId: null
+  dx: 0,
+  dy: 0,
+  dist: 0,
+  targetAngle: 0,
+  pointerId: null
 };
 
 function updateTouchVisibility() {
-  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
   const shouldShow = G && (S.touchMode === 'on' || (S.touchMode === 'auto' && isTouchDevice));
   $('touchControls').classList.toggle('active', !!shouldShow);
 }
@@ -1834,78 +1882,118 @@ function resetTouchFireBtn() {
   $('touchFireLabel').textContent = 'LOCK';
 }
 
-const touchLeft = $('touchLeft'), stick = $('joystickStick');
-let touchOrigin = null;
+const touchLeftZone = $('touchLeftZone');
+const joystickBase = $('joystickBase');
+const stick = $('joystickStick');
+let touchOrigin = { x: 0, y: 0 };
 
-touchLeft.addEventListener('touchstart', e => {
+function onStickStart(clientX, clientY, id) {
   au = true; ac();
-  const t = e.changedTouches[0];
-  touchState.touchId = t.identifier;
+  if (!G || G.phase === 'over') return;
   touchState.active = true;
-  const rect = touchLeft.getBoundingClientRect();
-  touchOrigin = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
-  handleJoystickMove(t.clientX, t.clientY);
-  e.preventDefault();
-}, { passive: false });
+  touchState.pointerId = id;
 
-touchLeft.addEventListener('touchmove', e => {
-  for (let i = 0; i < e.changedTouches.length; i++) {
-    const t = e.changedTouches[i];
-    if (t.identifier === touchState.touchId) {
-      handleJoystickMove(t.clientX, t.clientY);
-      break;
-    }
-  }
-  e.preventDefault();
-}, { passive: false });
-
-function resetJoystick() {
-  touchState.active = false;
-  touchState.turnLeft = false;
-  touchState.turnRight = false;
-  touchState.moveForward = false;
-  touchState.analogX = 0;
-  touchState.touchId = null;
+  touchOrigin = { x: clientX, y: clientY };
+  joystickBase.style.left = (clientX - 65) + 'px';
+  joystickBase.style.top = (clientY - 65) + 'px';
+  joystickBase.style.display = 'flex';
   stick.style.transform = 'translate(0px, 0px)';
+  
+  handlePointerMove(clientX, clientY);
 }
 
-touchLeft.addEventListener('touchend', resetJoystick);
-touchLeft.addEventListener('touchcancel', resetJoystick);
-
-function handleJoystickMove(clientX, clientY) {
-  if (!touchOrigin) return;
-  const maxDist = 45;
-  const dx = clientX - touchOrigin.x, dy = clientY - touchOrigin.y;
+function handlePointerMove(clientX, clientY) {
+  if (!touchState.active) return;
+  const dx = clientX - touchOrigin.x;
+  const dy = clientY - touchOrigin.y;
   const dist = Math.hypot(dx, dy);
+  const maxDist = 52;
   const angle = Math.atan2(dy, dx);
   const clampedDist = Math.min(maxDist, dist);
+
   const sx = Math.cos(angle) * clampedDist;
   const sy = Math.sin(angle) * clampedDist;
   stick.style.transform = `translate(${sx}px, ${sy}px)`;
 
-  touchState.analogX = sx / maxDist;
-  touchState.turnLeft = sx < -12;
-  touchState.turnRight = sx > 12;
-  touchState.moveForward = sy < -10;
+  touchState.dist = dist;
+  touchState.dx = dx;
+  touchState.dy = dy;
+
+  // In 3D arena camera view:
+  // dx on screen = World X (right = +X, left = -X)
+  // dy on screen = World Z (down on screen = +Z towards camera, up on screen = -Z away from camera)
+  if (dist > 6) {
+    touchState.targetAngle = Math.atan2(dx, dy);
+  }
 }
 
-$('touchFireBtn').addEventListener('click', e => {
-  au = true; ac();
-  if (G && G.phase === 'aim') {
-    const p1 = G.ps[0];
-    if (p1 && !p1.bot && !p1.remote) lock(p1);
+function endJoystick(e) {
+  if (!touchState.active) return;
+  if (!e || e.pointerId == null || e.pointerId === touchState.pointerId) {
+    touchState.active = false;
+    touchState.dist = 0;
+    touchState.pointerId = null;
+    stick.style.transform = 'translate(0px, 0px)';
+    joystickBase.style.display = 'none';
   }
-});
-$('touchFireBtn').addEventListener('touchstart', e => {
-  au = true; ac();
-  if (G && G.phase === 'aim') {
-    const p1 = G.ps[0];
-    if (p1 && !p1.bot && !p1.remote) lock(p1);
-  }
+}
+
+touchLeftZone.addEventListener('pointerdown', e => {
+  try { touchLeftZone.setPointerCapture(e.pointerId); } catch(_) {}
+  onStickStart(e.clientX, e.clientY, e.pointerId);
   e.preventDefault();
+});
+
+touchLeftZone.addEventListener('pointermove', e => {
+  if (!touchState.active || e.pointerId !== touchState.pointerId) return;
+  handlePointerMove(e.clientX, e.clientY);
+  e.preventDefault();
+});
+
+touchLeftZone.addEventListener('pointerup', endJoystick);
+touchLeftZone.addEventListener('pointercancel', endJoystick);
+window.addEventListener('pointerup', endJoystick);
+window.addEventListener('pointercancel', endJoystick);
+
+// Touch fallback for mobile engines
+touchLeftZone.addEventListener('touchstart', e => {
+  if (e.touches && e.touches[0]) {
+    const t = e.touches[0];
+    onStickStart(t.clientX, t.clientY, t.identifier);
+    if (e.cancelable) e.preventDefault();
+  }
 }, { passive: false });
 
-/* Landscape Lock Request */
+touchLeftZone.addEventListener('touchmove', e => {
+  if (!touchState.active) return;
+  for (let i = 0; i < e.changedTouches.length; i++) {
+    const t = e.changedTouches[i];
+    if (t.identifier === touchState.pointerId) {
+      handlePointerMove(t.clientX, t.clientY);
+      if (e.cancelable) e.preventDefault();
+      break;
+    }
+  }
+}, { passive: false });
+
+touchLeftZone.addEventListener('touchend', endJoystick);
+touchLeftZone.addEventListener('touchcancel', endJoystick);
+window.addEventListener('touchend', endJoystick);
+
+function onTouchFire(e) {
+  au = true; ac();
+  if (G && (G.phase === 'aim' || G.phase === 'prep')) {
+    const p1 = G.ps.find(p => isLocalHuman(p)) || G.ps[0];
+    if (p1 && !p1.bot && !p1.remote) lock(p1);
+  }
+  if (e && e.cancelable) e.preventDefault();
+}
+
+$('touchFireBtn').addEventListener('pointerdown', onTouchFire);
+$('touchFireBtn').addEventListener('touchstart', onTouchFire, { passive: false });
+$('touchFireBtn').addEventListener('click', onTouchFire);
+
+/* Landscape Lock Request & Dismiss */
 async function triggerLandscapeLock() {
   au = true; ac();
   try {
@@ -1918,6 +2006,9 @@ async function triggerLandscapeLock() {
   } catch(e) {}
 }
 $('btnRequestLandscape').onclick = triggerLandscapeLock;
+$('btnDismissRotate').onclick = () => {
+  $('rotateOverlay').classList.add('dismissed');
+};
 
 /* Quickbar Toggles */
 $('btnCrt').onclick = () => {
