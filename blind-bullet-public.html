@@ -747,6 +747,7 @@ const ctl = [
 const slots = [{ t: 1, s: 0 }, { t: 1, s: 1 }, { t: 0, s: 2 }, { t: 0, s: 3 }];
 const S = { mode: 'ffa', map: 0, music: 0.5, sfx: 0.8, touchMode: 'auto' };
 let TP = [0, 0, 0, 0];
+var world = null, tiles = [], edge = null, G = null, B = [], demo = [], shake = 0, time = 0;
 const RINGS = 5, RW = 1.6, MINR = 2;
 
 const MAPS = [
@@ -876,8 +877,6 @@ function resize() {
 window.addEventListener('resize', resize);
 window.addEventListener('orientationchange', () => setTimeout(resize, 200));
 resize();
-
-let world, tiles = [], edge, G = null, B = [], demo = [], shake = 0, time = 0;
 
 /* Visual Flash screen effect */
 function screenFlash(col = '#fff', opacity = 0.35) {
@@ -1872,8 +1871,9 @@ const touchState = {
 
 function updateTouchVisibility() {
   const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
-  const shouldShow = G && (S.touchMode === 'on' || (S.touchMode === 'auto' && isTouchDevice));
-  $('touchControls').classList.toggle('active', !!shouldShow);
+  const shouldShow = (typeof G !== 'undefined' && G != null) && (S.touchMode === 'on' || (S.touchMode === 'auto' && isTouchDevice));
+  const tc = $('touchControls');
+  if (tc) tc.classList.toggle('active', !!shouldShow);
 }
 
 function resetTouchFireBtn() {
